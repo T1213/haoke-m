@@ -7,6 +7,9 @@ const Info = () => import('@/views/Info')
 const Personal = () => import('@/views/Personal')
 const Login = () => import('@/views/Login')
 const SearchMap = () => import('@/views/SearchMap')
+const Register = () => import('@/views/Register')
+const PreLogin = () => import('@/views/PreLogin')
+const PostLogin = () => import('@/views/PostLogin')
 Vue.use(VueRouter)
 
 const routes = [
@@ -34,7 +37,17 @@ const routes = [
       {
         path: 'personal',
         component: Personal,
-        meta: { title: '我的' }
+        meta: { title: '我的' },
+        children: [
+          {
+            path: 'prelogin',
+            component: PreLogin
+          },
+          {
+            path: 'postlogin',
+            component: PostLogin
+          }
+        ]
       }
     ]
   },
@@ -45,6 +58,10 @@ const routes = [
   {
     path: '/searchmap',
     component: SearchMap
+  },
+  {
+    path: '/register',
+    component: Register
   }
 ]
 

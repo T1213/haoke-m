@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <div>我的</div>
-    <router-view></router-view>
-  </div>
+  <div>登陆后</div>
 </template>
 
 <script>
