@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- 搜索框 -->
+    <!-- <MyInput></MyInput> -->
     <!-- 轮播图 -->
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
       <van-swipe-item v-for="(image, index) in images" :key="index">
@@ -63,13 +65,17 @@
             />
             <div class="new-right">
               <h2>{{ obj.title }}</h2>
-              <van-tag plain color="#ccc" text-color="#ccc" type="primary"
+              <van-tag plain color="#96999b" text-color="#96999b" type="primary"
                 >租房</van-tag
               >
-              <van-tag plain color="#ccc" text-color="#ccc" type="primary">{{
-                obj.from
-              }}</van-tag>
-              <van-tag plain color="#ccc" text-color="#ccc" type="primary"
+              <van-tag
+                plain
+                color="#96999b"
+                text-color="#96999b"
+                type="primary"
+                >{{ obj.from }}</van-tag
+              >
+              <van-tag plain color="#96999b" text-color="#96999b" type="primary"
                 >限购</van-tag
               >
 
@@ -83,6 +89,7 @@
 </template>
 
 <script>
+// import MyInput from '@/components/MyInput.vue'
 import { getSwiperAPI, getGroupsAPI, getNewsAPI } from '@/api'
 export default {
   created () {
@@ -102,7 +109,6 @@ export default {
     async fn () {
       const res = await getSwiperAPI()
       console.log(res)
-
       this.images = res.data.body
     },
     async getGroupFn () {
@@ -118,8 +124,8 @@ export default {
   },
   computed: {},
   watch: {},
-  filters: {},
-  components: {}
+  filters: {}
+  // components: { MyInput }
 }
 </script>
 

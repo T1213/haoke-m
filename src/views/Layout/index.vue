@@ -1,7 +1,7 @@
 <template>
-  <div class="main">
+  <div>
     <!-- //路由 -->
-    <router-view></router-view>
+    <router-view class="main"></router-view>
     <!-- 底部 -->
     <van-tabbar route fixed>
       <van-tabbar-item replace to="/home" class="iconfont icon-shouye">

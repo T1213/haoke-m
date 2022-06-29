@@ -1,10 +1,7 @@
 <template>
   <div>
-    <van-nav-bar title="账号登陆">
-      <template #left>
-        <van-icon name="arrow-left" size="18" />
-      </template>
-    </van-nav-bar>
+    <!-- 导航头 -->
+    <MyNavBar title="账号登陆"></MyNavBar>
     <!-- 表单 -->
     <van-form @submit="onSubmit">
       <van-field
@@ -48,6 +45,7 @@ export default {
         console.log(res)
         this.$store.commit('saveToken', res.data.body)
         this.$toast.success('登陆成功')
+        this.$router.replace('/personal')
       } catch (error) {
         console.log(error, 123)
       }

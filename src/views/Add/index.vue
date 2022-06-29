@@ -1,5 +1,5 @@
 <template>
-  <div>登陆后</div>
+  <div>发布房源</div>
 </template>
 
 <script>
@@ -16,5 +16,5 @@ export default {
 }
 </script>
 
-<style scoped lang='less'>
+<style scoped>
 </style>
