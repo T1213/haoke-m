@@ -4,7 +4,12 @@
     <van-cell>
       <!-- 使用 title 插槽来自定义标题 -->
       <template #title>
-        <div class="love-text" v-for="obj in loveList" :key="obj.id">
+        <div
+          class="love-text"
+          v-for="obj in loveList"
+          :key="obj.id"
+          @click="saveHouseCodeFn(obj.houseCode)"
+        >
           <img
             class="love-left"
             :src="'http://liufusong.top:8080' + obj.houseImg"
@@ -54,6 +59,10 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    },
+    saveHouseCodeFn (houseCode) {
+      this.$store.commit('saveHouseCode', houseCode)
+      this.$router.push('/detail')
     }
   },
   computed: {},

@@ -1,19 +1,20 @@
 <template>
-  <div>
-    <div class="pre-login">
-      <div class="pre-login-text">
-        <div class="visitor">
-          <img src="http://liufusong.top:8080/img/profile/avatar.png" />
-        </div>
-        <p>游客</p>
-        <van-button type="primary" to="login">去登录</van-button>
+  <div class="pre-login">
+    <!-- 背景图 -->
+    <img src="http://liufusong.top:8080/img/profile/bg.png" class="bg" />
+    <div class="pre-login-text">
+      <div class="visitor">
+        <img src="http://liufusong.top:8080/img/profile/avatar.png" />
       </div>
+      <p>游客</p>
+      <van-button type="primary" to="login">去登录</van-button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  name: 'Pre-login',
   created () { },
   data () {
     return {}
@@ -29,20 +30,31 @@ export default {
 <style scoped lang='less'>
 .pre-login {
   position: relative;
-  margin: 0 auto 3px;
-  width: 320px;
-  height: 165px;
+  margin: 0 0 0 -27.5px;
+  width: 375px;
+  min-height: 300px;
   font-size: 14px;
   color: #333;
   background-color: #fff;
-  box-shadow: 0 0 10px 2px #ddd;
+  .bg {
+    width: 100%;
+  }
   .pre-login-text {
     position: absolute;
+    background: #fff;
+    width: 85%;
+    height: 55%;
+    bottom: 0;
     left: 50%;
-    top: -30px;
     transform: translateX(-50%);
-    // background-color: bisque;
+    box-shadow: 0 0 10px 3px #ddd;
+    margin: 50px auto 2px;
+    padding: 0 20px;
+    text-align: center;
+    font-size: 13px;
     .visitor {
+      margin-left: 110px;
+      margin-top: -29px;
       width: 60px;
       height: 60px;
       border: 4px solid #f5f5f5;

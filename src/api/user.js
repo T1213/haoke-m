@@ -9,3 +9,9 @@ export const login = ({ username, password }) => {
     }
   })
 }
+// 请求用户资料
+export const getUserInfo = () => {
+  return request({
+    url: '/user'
+  })
+}

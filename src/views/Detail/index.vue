@@ -1,13 +1,16 @@
 <template>
   <div class="main">
-    <MyNavBar title="唐宁街9号"></MyNavBar>
+    <MyNavBar :title="detailArr.community"></MyNavBar>
     <!-- 轮播图 -->
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-      <van-swipe-item>1</van-swipe-item>
-      <van-swipe-item>2</van-swipe-item>
-      <van-swipe-item>3</van-swipe-item>
-      <van-swipe-item>4</van-swipe-item>
+      <van-swipe-item
+        v-for="(imageUrl, index) in detailArr.houseImg"
+        :key="index"
+      >
+        <img :src="'http://liufusong.top:8080' + imageUrl"
+      /></van-swipe-item>
     </van-swipe>
+
     <!-- 房子基本信息 -->
     <div class="house-info">
       <van-cell>
@@ -15,8 +18,13 @@
         <template #title>
           <div class="custom-title">整租</div>
           <div>
-            <van-tag type="success" color="#e1f5f8" text-color="#39becd"
-              >近地铁
+            <van-tag
+              type="success"
+              color="#e1f5f8"
+              text-color="#39becd"
+              v-for="(tag, index) in detailArr.tags"
+              :key="index"
+              >{{ tag }}
             </van-tag>
           </div>
         </template>
@@ -25,17 +33,17 @@
       <div class="important-info">
         <div class="price">
           <h3>
-            12000
+            {{ detailArr.price }}
             <span>/月</span>
           </h3>
           <p>租金</p>
         </div>
         <div class="price">
-          <h3>一室</h3>
+          <h3>{{ detailArr.roomType }}</h3>
           <p>房型</p>
         </div>
         <div class="price">
-          <h3>80㎡</h3>
+          <h3>{{ detailArr.size }}㎡</h3>
           <p>租金</p>
         </div>
       </div>
@@ -43,37 +51,46 @@
       <div class="house-detail">
         <div class="details">
           <p><span>装修：</span>精装</p>
-          <p><span>楼层：</span>高楼层</p>
+          <p><span>楼层：</span>{{ detailArr.floor }}</p>
         </div>
         <div class="details">
-          <p><span>朝向：</span>东</p>
+          <p v-if="detailArr.oriented">
+            <span>朝向：</span>{{ detailArr.oriented[0] }}
+          </p>
           <p><span>类型：</span>普通住宅</p>
         </div>
       </div>
     </div>
     <!-- 地图 -->
+    <!-- 返回的数据中有包含经纬度的数组，可以利用经纬度数据再请求百度api, -->
     <div class="house-map">
       <div class="title">
         小区：
-        <span>天山星城</span>
+        <span>{{ detailArr.community }}</span>
       </div>
-      <img src="/img/bg.png" alt="" />
+      <div id="houseMap"></div>
     </div>
     <!-- 配置 -->
     <div class="house-config">
       <h3>房屋配置</h3>
       <ul>
-        <li>
-          <p><i class="iconfont icon-kongtiao"></i></p>
-          空调
-        </li>
-        <li>
-          <p><i class="iconfont icon-bingxiang"></i></p>
-          冰箱
-        </li>
-        <li>
-          <p><i class="iconfont icon-reshuiqi"></i></p>
-          热水器
+        <li v-for="(item, index) in detailArr.supporting" :key="index">
+          <p><i class="iconfont icon-yigui" v-if="item === '衣柜'"></i></p>
+          <p><i class="iconfont icon-xiyiji" v-if="item === '洗衣机'"></i></p>
+          <p><i class="iconfont icon-kongtiao" v-if="item === '空调'"></i></p>
+          <p>
+            <i
+              class="iconfont icon-meiqitianranqi"
+              v-if="item === '天然气'"
+            ></i>
+          </p>
+          <p><i class="iconfont icon-bingxiang" v-if="item === '冰箱'"></i></p>
+          <p><i class="iconfont icon-nuanqi" v-if="item === '暖气'"></i></p>
+          <p><i class="iconfont icon-dianshiji" v-if="item === '电视'"></i></p>
+          <p><i class="iconfont icon-reshuiqi" v-if="item === '热水器'"></i></p>
+          <p><i class="iconfont icon-wifi" v-if="item === '宽带'"></i></p>
+          <p><i class="iconfont icon-shafa" v-if="item === '沙发'"></i></p>
+          {{ item }}
         </li>
       </ul>
     </div>
@@ -83,9 +100,9 @@
       <div>
         <div class="host">
           <div class="contact">
-            <van-image round src="http://liufusong.top:8080/img/avatar.png" />
+            <van-image round :src="usrInfoList.avatar" />
             <div class="user">
-              <p>王女士</p>
+              <p>{{ usrInfoList.nickname }}</p>
               <div class="renzheng">
                 <i class="iconfont icon-renzheng"></i>已认证房主
               </div>
@@ -93,21 +110,17 @@
           </div>
           <button>发消息</button>
         </div>
-        <div class="content">
-          1.周边配套齐全，地铁四号线陶然亭站，交通便利，公交云集，距离北京南站、西站都很近距离。
-          2.小区规模大，配套全年，幼儿园，体育场，游泳馆，养老院，小学。
-          3.人车分流，环境优美。
-          4.精装两居室，居家生活方便，还有一个小书房，看房随时联系。
-        </div>
+        <!-- 描述信息 -->
+        <div class="content">{{ detailArr.description }}</div>
       </div>
     </div>
     <!--猜你喜欢 -->
     <div class="guess">
       <h3>猜你喜欢</h3>
       <div class="list">
-        <van-cell>
-          <!-- 使用 title 插槽来自定义标题 -->
-          <template #title>
+        <!-- <van-cell> -->
+        <!-- 使用 title 插槽来自定义标题 -->
+        <!-- <template #title>
             <div class="love-text" v-for="obj in loveList" :key="obj.id">
               <img
                 class="love-left"
@@ -131,21 +144,89 @@
                 </div>
               </div>
             </div>
-          </template>
-        </van-cell>
+          </template> -->
+        <!-- </van-cell> -->
       </div>
+    </div>
+    <!-- 底部功能键 -->
+    <div class="tab-buttom">
+      <div class="left love-btn">
+        <i class="iconfont icon-shoucang1"></i>
+        <i class="iconfont icon-shoucang"></i>
+        收藏
+      </div>
+      <div class="love-btn">在线咨询</div>
+      <div class="love-btn right"><a href="tel:400-618-4000">电话预约</a></div>
     </div>
   </div>
 </template>
 
 <script>
+import store from '@/store'
+import { love } from '@/api/love'
+import { getUserInfo } from '@/api/user'
+import { getHouseDetail } from '@/api/detail'
 import MyNavBar from '@/components/MyNavBar.vue'
 export default {
-  created () { },
-  data () {
-    return {}
+  created () {
+    if (store.state.user) {
+      this.getHouseDetail()
+      this.getUserInfo()
+      this.getLoveListFn()
+    }
   },
-  methods: {},
+  mounted () {
+    const { BMapGL } = window
+    const map = new BMapGL.Map('houseMap')
+    // 创建地图实例
+    console.log('经纬度打印' + 116.404, 39.915)
+    const point = new BMapGL.Point(116.404, 39.915)
+
+    // 创建点坐标
+    map.centerAndZoom(point, 15)
+    // 初始化地图，设置中心点坐标和地图级别
+    map.enableScrollWheelZoom(true)
+    // 创建点标记
+    const marker1 = new BMapGL.Marker(new BMapGL.Point(116.404, 39.915))
+    // 在地图上添加点标记
+    map.addOverlay(marker1)
+  },
+  data () {
+    return {
+      detailArr: [],
+      usrInfoList: {},
+      loveList: []
+    }
+  },
+  methods: {
+    async getHouseDetail () {
+      try {
+        const res = await getHouseDetail(this.$store.state.houseCode)
+        console.log(111, res)
+        this.detailArr = res.data.body
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async getUserInfo () {
+      try {
+        const res = await getUserInfo()
+        console.log('getUserInfo', res)
+        this.usrInfoList = res.data.body
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async getLoveListFn () {
+      try {
+        const res = await love()
+        console.log(res)
+        this.loveList = res.data.body
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  },
   computed: {},
   watch: {},
   filters: {},
@@ -232,8 +313,9 @@ export default {
       line-height: 44px;
       color: #666;
     }
-    img {
+    #container {
       width: 100%;
+      height: 145px;
     }
   }
   .house-config {
@@ -258,6 +340,11 @@ export default {
         margin: 10px 0;
         width: 20%;
         line-height: 23px;
+        p {
+          .iconfont {
+            font-size: 20px;
+          }
+        }
       }
     }
   }
@@ -311,6 +398,7 @@ export default {
       }
     }
     .content {
+      margin-top: 7px;
       font-size: 14px;
       line-height: 1.6;
       padding: 10px 0;
@@ -325,6 +413,43 @@ export default {
       margin-bottom: 10px;
       padding: 15px 0;
       border-bottom: 1px solid #cecece;
+    }
+  }
+  .tab-buttom {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    border-top: 1px solid #cecece;
+    text-align: center;
+    font-size: 17px;
+    color: #999;
+    background-color: #fff;
+    .left {
+      border-right: 1px solid #e8e8e9;
+      margin-left: 6px;
+      .icon-shoucang {
+        color: #fa5741;
+      }
+    }
+    .right {
+      background-color: #33be85;
+      a {
+        color: #fff;
+      }
+    }
+
+    .love-btn {
+      flex: 1;
+      min-width: 10px;
+      text-align: center;
+      font-size: 17px;
+      color: #999;
+      line-height: 50px;
     }
   }
 }

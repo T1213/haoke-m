@@ -8,12 +8,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user: null
+    user: null,
+    houseCode: ''
   },
   getters: {},
   mutations: {
     saveToken (state, payload) {
       state.user = payload
+    },
+    saveHouseCode (state, payload) {
+      state.houseCode = payload
     }
   },
   actions: {},

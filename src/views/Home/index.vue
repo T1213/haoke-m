@@ -212,7 +212,7 @@ export default {
     .date {
       position: absolute;
       right: 8px;
-      top: 85px;
+      top: 70px;
       font-size: 12px;
       color: #ccc;
     }
