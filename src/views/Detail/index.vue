@@ -122,10 +122,7 @@
           <!-- 使用 title 插槽来自定义标题 -->
           <template #title>
             <div class="love-text">
-              <img
-                class="love-left"
-                src="/public/img/avatar.png"
-              />
+              <img class="love-left" src="/public/img/avatar.png" />
               <div class="love-right">
                 <h2>南海</h2>
                 <p>海底</p>
@@ -147,10 +144,7 @@
           <!-- 使用 title 插槽来自定义标题 -->
           <template #title>
             <div class="love-text">
-              <img
-                class="love-left"
-               src="/public/img/avatar.png"
-              />
+              <img class="love-left" src="/public/img/avatar.png" />
               <div class="love-right">
                 <h2>东海1号</h2>
                 <p>海底</p>
@@ -172,10 +166,7 @@
           <!-- 使用 title 插槽来自定义标题 -->
           <template #title>
             <div class="love-text">
-              <img
-                class="love-left"
-                src="/public/img/avatar.png"
-              />
+              <img class="love-left" src="/public/img/avatar.png" />
               <div class="love-right">
                 <h2>白马地块</h2>
                 <p>☹☹☾☽☹</p>
@@ -283,6 +274,7 @@ export default {
           const res = await cancelLove(this.houseCode)
           console.log('取消收藏', res)
           this.$store.commit('saveIsFavorite', false)
+          this.$toast.success('已添加至收藏')
         } catch (error) {
           console.log(error)
         }
@@ -291,6 +283,7 @@ export default {
           const res = await addLove(this.houseCode)
           console.log('添加收藏', res)
           this.$store.commit('saveIsFavorite', true)
+          this.$toast.fail('已取消收藏')
         } catch (error) {
           console.log(error)
         }
