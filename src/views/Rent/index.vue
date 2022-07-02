@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { confirmlLove } from '@/api/love'
 import store from '@/store'
 import { rent } from '@/api/rent'
 import MyNavBar from '@/components/MyNavBar.vue'
@@ -60,8 +61,12 @@ export default {
         console.log(err)
       }
     },
-    saveHouseCodeFn (houseCode) {
+    async saveHouseCodeFn (houseCode) {
       this.$store.commit('saveHouseCode', houseCode)
+      // 保存isFavorite(先发送ajax，再把返回的isFavorite存到vuex)
+      const res = await confirmlLove(houseCode)
+      console.log('查看收藏', res)
+      this.$store.commit('saveIsFavorite', res.data.body.isFavorite)
       this.$router.push('/detail')
     }
 

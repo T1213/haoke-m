@@ -5,3 +5,9 @@ export const love = () => {
     url: '/user/favorites'
   })
 }
+// 查看房屋是否收藏
+export const confirmlLove = (id) => {
+  return request({
+    url: `/user/favorites/${id}`
+  })
+}

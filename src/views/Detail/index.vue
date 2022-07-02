@@ -118,41 +118,88 @@
     <div class="guess">
       <h3>猜你喜欢</h3>
       <div class="list">
-        <!-- <van-cell> -->
-        <!-- 使用 title 插槽来自定义标题 -->
-        <!-- <template #title>
-            <div class="love-text" v-for="obj in loveList" :key="obj.id">
+        <van-cell>
+          <!-- 使用 title 插槽来自定义标题 -->
+          <template #title>
+            <div class="love-text">
               <img
                 class="love-left"
-                :src="'http://liufusong.top:8080' + obj.houseImg"
+                src="/public/img/avatar.png"
               />
               <div class="love-right">
-                <h2>{{ obj.title }}</h2>
-                <p>{{ obj.desc }}</p>
+                <h2>南海</h2>
+                <p>海底</p>
                 <div class="tag">
-                  <van-tag
-                    type="success"
-                    color="#e1f5f8"
-                    text-color="#39becd"
-                    >{{ obj.tags[0] }}</van-tag
+                  <van-tag type="success" color="#e1f5f8" text-color="#39becd"
+                    >近海底隧道</van-tag
                   >
                 </div>
 
                 <div class="price">
-                  {{ obj.price }}
+                  1200
                   <span>元/月</span>
                 </div>
               </div>
             </div>
-          </template> -->
-        <!-- </van-cell> -->
+          </template>
+        </van-cell>
+        <van-cell>
+          <!-- 使用 title 插槽来自定义标题 -->
+          <template #title>
+            <div class="love-text">
+              <img
+                class="love-left"
+               src="/public/img/avatar.png"
+              />
+              <div class="love-right">
+                <h2>东海1号</h2>
+                <p>海底</p>
+                <div class="tag">
+                  <van-tag type="success" color="#e1f5f8" text-color="#39becd"
+                    >近海底隧道</van-tag
+                  >
+                </div>
+
+                <div class="price">
+                  1200
+                  <span>元/月</span>
+                </div>
+              </div>
+            </div>
+          </template>
+        </van-cell>
+        <van-cell>
+          <!-- 使用 title 插槽来自定义标题 -->
+          <template #title>
+            <div class="love-text">
+              <img
+                class="love-left"
+                src="/public/img/avatar.png"
+              />
+              <div class="love-right">
+                <h2>白马地块</h2>
+                <p>☹☹☾☽☹</p>
+                <div class="tag">
+                  <van-tag type="success" color="#e1f5f8" text-color="#39becd"
+                    >近地铁</van-tag
+                  >
+                </div>
+
+                <div class="price">
+                  122200
+                  <span>元/月</span>
+                </div>
+              </div>
+            </div>
+          </template>
+        </van-cell>
       </div>
     </div>
     <!-- 底部功能键 -->
     <div class="tab-buttom">
-      <div class="left love-btn">
-        <i class="iconfont icon-shoucang1"></i>
-        <i class="iconfont icon-shoucang"></i>
+      <div class="left love-btn" @click="changeLove">
+        <i class="iconfont icon-shoucang1" v-if="isFavorite === false"></i>
+        <i class="iconfont icon-shoucang" v-else></i>
         收藏
       </div>
       <div class="love-btn">在线咨询</div>
@@ -162,40 +209,43 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import store from '@/store'
-import { love } from '@/api/love'
+// import { love } from '@/api/love'
 import { getUserInfo } from '@/api/user'
-import { getHouseDetail } from '@/api/detail'
+import { getHouseDetail, addLove, cancelLove, confirmlLove } from '@/api/detail'
 import MyNavBar from '@/components/MyNavBar.vue'
 export default {
   created () {
     if (store.state.user) {
       this.getHouseDetail()
       this.getUserInfo()
-      this.getLoveListFn()
+      // this.getLoveListFn()
+      this.fn()
     }
   },
   mounted () {
+    // console.log('1233' + this.detailArr.coord.latitude, this.detailArr.coord.longitude)
     const { BMapGL } = window
     const map = new BMapGL.Map('houseMap')
     // 创建地图实例
-    console.log('经纬度打印' + 116.404, 39.915)
     const point = new BMapGL.Point(116.404, 39.915)
-
     // 创建点坐标
     map.centerAndZoom(point, 15)
     // 初始化地图，设置中心点坐标和地图级别
+
+    map.centerAndZoom(new BMapGL.Point(116.404, 39.928), 15)
     map.enableScrollWheelZoom(true)
     // 创建点标记
-    const marker1 = new BMapGL.Marker(new BMapGL.Point(116.404, 39.915))
+    const marker1 = new BMapGL.Marker(new BMapGL.Point(116.404, 39.925))
     // 在地图上添加点标记
     map.addOverlay(marker1)
   },
   data () {
     return {
-      detailArr: [],
-      usrInfoList: {},
-      loveList: []
+      detailArr: {},
+      usrInfoList: {}
+      // loveList: []
     }
   },
   methods: {
@@ -217,17 +267,39 @@ export default {
         console.log(error)
       }
     },
-    async getLoveListFn () {
+    async fn () {
       try {
-        const res = await love()
-        console.log(res)
-        this.loveList = res.data.body
+        const res = await confirmlLove(this.houseCode)
+        console.log('确认收藏' + res)
+        // this.loveList = res.data.body
+        this.isFavorite = res.data.body.isFavorite
       } catch (err) {
         console.log(err)
       }
+    },
+    async changeLove () {
+      if (this.isFavorite) {
+        try {
+          const res = await cancelLove(this.houseCode)
+          console.log('取消收藏', res)
+          this.$store.commit('saveIsFavorite', false)
+        } catch (error) {
+          console.log(error)
+        }
+      } else {
+        try {
+          const res = await addLove(this.houseCode)
+          console.log('添加收藏', res)
+          this.$store.commit('saveIsFavorite', true)
+        } catch (error) {
+          console.log(error)
+        }
+      }
     }
   },
-  computed: {},
+  computed: {
+    ...mapState(['isFavorite', 'houseCode'])
+  },
   watch: {},
   filters: {},
   components: { MyNavBar }
@@ -313,8 +385,7 @@ export default {
       line-height: 44px;
       color: #666;
     }
-    #container {
-      width: 100%;
+    #houseMap {
       height: 145px;
     }
   }
@@ -450,6 +521,41 @@ export default {
       font-size: 17px;
       color: #999;
       line-height: 50px;
+    }
+  }
+  .love-text {
+    display: flex;
+    margin-bottom: 7px;
+    .love-left {
+      width: 106px;
+      height: 80px;
+      margin-right: 5px;
+    }
+    .love-right {
+      position: relative;
+      h2 {
+        margin: 0;
+        line-height: 22px;
+        font-size: 15px;
+        color: #394043;
+      }
+      p {
+        font-size: 12px;
+        color: #afb2b3;
+        margin: 0;
+      }
+      .tag {
+        margin-top: -4px;
+      }
+      .price {
+        font-weight: 700;
+        color: #fa5741;
+        font-size: 16px;
+        span {
+          font-size: 12px;
+          font-weight: normal;
+        }
+      }
     }
   }
 }

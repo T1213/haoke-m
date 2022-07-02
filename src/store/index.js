@@ -9,7 +9,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: null,
-    houseCode: ''
+    houseCode: '',
+    isFavorite: false
   },
   getters: {},
   mutations: {
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     },
     saveHouseCode (state, payload) {
       state.houseCode = payload
+    },
+    saveIsFavorite (state, payload) {
+      state.isFavorite = payload
     }
   },
   actions: {},
