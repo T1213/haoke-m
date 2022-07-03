@@ -10,7 +10,8 @@ export default new Vuex.Store({
   state: {
     user: null,
     houseCode: '',
-    isFavorite: false
+    isFavorite: false,
+    cityName: '北京'
   },
   getters: {},
   mutations: {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     },
     saveIsFavorite (state, payload) {
       state.isFavorite = payload
+    },
+    saveCityName (state, payload) {
+      state.cityName = payload
     }
   },
   actions: {},

@@ -202,7 +202,6 @@
 <script>
 import { mapState } from 'vuex'
 import store from '@/store'
-// import { love } from '@/api/love'
 import { getUserInfo } from '@/api/user'
 import { getHouseDetail, addLove, cancelLove, confirmlLove } from '@/api/detail'
 import MyNavBar from '@/components/MyNavBar.vue'
@@ -211,32 +210,14 @@ export default {
     if (store.state.user) {
       this.getHouseDetail()
       this.getUserInfo()
-      // this.getLoveListFn()
       this.fn()
     }
   },
-  mounted () {
-    // console.log('1233' + this.detailArr.coord.latitude, this.detailArr.coord.longitude)
-    const { BMapGL } = window
-    const map = new BMapGL.Map('houseMap')
-    // 创建地图实例
-    const point = new BMapGL.Point(116.404, 39.915)
-    // 创建点坐标
-    map.centerAndZoom(point, 15)
-    // 初始化地图，设置中心点坐标和地图级别
-
-    map.centerAndZoom(new BMapGL.Point(116.404, 39.928), 15)
-    map.enableScrollWheelZoom(true)
-    // 创建点标记
-    const marker1 = new BMapGL.Marker(new BMapGL.Point(116.404, 39.925))
-    // 在地图上添加点标记
-    map.addOverlay(marker1)
-  },
+  mounted () { },
   data () {
     return {
       detailArr: {},
       usrInfoList: {}
-      // loveList: []
     }
   },
   methods: {
@@ -288,12 +269,51 @@ export default {
           console.log(error)
         }
       }
+    },
+    getMap (content) {
+      // console.log('1233' + this.detailArr.coord.latitude, this.detailArr.coord.longitude)
+      const { BMapGL } = window
+      const map = new BMapGL.Map('houseMap')
+      // 创建地图实例
+      const point = new BMapGL.Point(this.detailArr.coord.longitude, this.detailArr.coord.latitude)
+      // 创建点坐标
+      map.centerAndZoom(point, 15)
+      // 初始化地图，设置中心点坐标和地图级别
+      // 可以滚轮缩放
+      map.enableScrollWheelZoom(true)
+      // 创建点标记
+      // const marker1 = new BMapGL.Marker(new BMapGL.Point(116.404, 39.925))
+      // 在地图上添加点标记
+      // map.addOverlay(marker1)
+      // 添加文本样式
+      const label = new BMapGL.Label(content, { // 创建文本标注
+        position: point,
+        offset: new BMapGL.Size(10, 20)
+      })
+      map.addOverlay(label) // 将标注添加到地图中
+      label.setStyle({ // 设置label的样式
+        color: 'rgb(255, 255, 255)',
+        fontSize: '12px',
+        backgroundColor: 'rgb(238, 93, 91)',
+        border: '1px solid rgb (255, 0, 0)',
+        padding: '5px 10px',
+        whiteSpace: 'nowrap',
+        height: '25px'
+      })
     }
   },
   computed: {
     ...mapState(['isFavorite', 'houseCode'])
   },
-  watch: {},
+  watch: {
+    'detailArr.community': {
+      handler (newval) {
+        this.getMap(newval)
+      },
+      immediate: true
+
+    }
+  },
   filters: {},
   components: { MyNavBar }
 }

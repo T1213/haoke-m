@@ -9,7 +9,7 @@
     >
       <template #label>
         <div class="area" @click="$router.push('/city')">
-          <span>{{value}}</span>
+          <span>{{$store.state.cityName}}</span>
           <van-icon name="arrow-down" />
         </div>
       </template>
@@ -18,7 +18,7 @@
           color="#fff"
           size="0.53rem"
           name="map-marked"
-          @click="searchMapFn(value)"
+          @click="$router.push('/map')"
         />
       </template>
     </van-search>
@@ -26,23 +26,15 @@
 </template>
 
 <script>
-import { getCityId } from '@/api/searchInput'
 export default {
   created () { },
   data () {
     return {
-      value: '北京'
+      value: ''
     }
   },
   methods: {
-    onSearch () { },
-    async searchMapFn (value) {
-      // 根据name请求ajax，获取返回的城市ID,将ID路由传参给map路由，在map路由里发送请求，获取该城市的房源信息
-      const res = await getCityId(value)
-      console.log('cityId', res)
-      // 跳转到map路由
-      this.$router.push('/map')
-    }
+    onSearch () { }
   },
   computed: {},
   watch: {},
@@ -58,10 +50,6 @@ export default {
   height: 34px;
   font-size: 14px;
   color: #333;
-  // background-color: tomato;
-  // .area{
-  //   border-right: 1px solid #ccc;
-  // }
   .van-icon {
     background-color: transparent;
   }

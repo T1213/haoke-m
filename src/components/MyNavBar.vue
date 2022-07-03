@@ -1,5 +1,5 @@
 <template>
-  <van-nav-bar :title="title">
+  <van-nav-bar :title="title" fixed z-index="2">
     <template #left>
       <van-icon name="arrow-left" size="18" @click="$router.go(-1)" />
     </template>
