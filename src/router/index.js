@@ -12,6 +12,8 @@ const Love = () => import('@/views/Love')
 const Rent = () => import('@/views/Rent')
 const Add = () => import('@/views/Add')
 const Detail = () => import('@/views/Detail')
+const Map = () => import('@/views/Map')
+const City = () => import('@/views/City')
 
 Vue.use(VueRouter)
 
@@ -73,6 +75,16 @@ const routes = [
   {
     path: '/detail',
     component: Detail
+  },
+  {
+    name: 'Map',
+    path: '/map',
+    component: Map
+  },
+  {
+    name: 'City',
+    path: '/city',
+    component: City
   }
 ]
 

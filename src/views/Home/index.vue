@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="home">
     <!-- 搜索框 -->
-    <!-- <MyInput></MyInput> -->
+    <MyInput class="searchInput"></MyInput>
     <!-- 轮播图 -->
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
       <van-swipe-item v-for="(image, index) in images" :key="index">
@@ -89,7 +89,7 @@
 </template>
 
 <script>
-// import MyInput from '@/components/MyInput.vue'
+import MyInput from '@/components/MyInput.vue'
 import { getSwiperAPI, getGroupsAPI, getNewsAPI } from '@/api'
 export default {
   created () {
@@ -124,97 +124,107 @@ export default {
   },
   computed: {},
   watch: {},
-  filters: {}
-  // components: { MyInput }
+  filters: {},
+  components: { MyInput }
 }
 </script>
 
 <style scoped lang='less'>
-.van-swipe-item img {
-  width: 100%;
-}
-.van-grid-item {
-  height: 102px;
-  padding: 10px 0;
-  .van-image {
-    width: 60px;
-    height: 60px;
-  }
-  h2 {
-    font-size: 14px;
-    font-weight: normal;
-    color: #333;
-    text-align: center;
-    line-height: 16px;
-    height: 16px;
-  }
-}
-.group {
-  background-color: #f6f5f6;
-  padding: 0 10px;
-  overflow: hidden;
-  h3 {
-    position: relative;
-    margin: 15px 0 15px 10px;
+.home {
+  position: relative;
+  .searchInput {
+    position: absolute;
+    top: 20px;
+    // left: 50%;
     width: 100%;
-    height: 17px;
-    line-height: 17px;
-    font-size: 14px;
-    color: #333;
-    span {
-      position: absolute;
-      right: 10px;
-      font-size: 12px;
-      color: #787d82;
-      font-weight: normal;
+    z-index: 9;
+  }
+  .van-swipe-item img {
+    width: 100%;
+  }
+  .van-grid-item {
+    height: 102px;
+    padding: 10px 0;
+    .van-image {
+      width: 60px;
+      height: 60px;
     }
-  }
-}
-.group-item {
-  display: flex;
-  // justify-content: space-between;
-  width: 100%;
-  height: 100%;
-  .left {
-    width: 50px;
-    height: 50px;
-    margin: 0 10px;
-    text-align: left;
-  }
-  .group-text p {
-    font-size: 16px;
-    color: #333;
-    text-align: left;
-    margin: 0;
-    padding: 0;
-  }
-  .custom-title {
-    margin-right: 4px;
-    vertical-align: middle;
-  }
-}
-.news-text {
-  display: flex;
-  margin-bottom: 7px;
-  .news-left {
-    width: 120px;
-    margin-right: 15px;
-  }
-  .new-right {
-    position: relative;
     h2 {
+      font-size: 14px;
+      font-weight: normal;
+      color: #333;
+      text-align: center;
+      line-height: 16px;
+      height: 16px;
+    }
+  }
+  .group {
+    background-color: #f6f5f6;
+    padding: 0 10px;
+    overflow: hidden;
+    h3 {
+      position: relative;
+      margin: 15px 0 15px 10px;
+      width: 100%;
+      height: 17px;
+      line-height: 17px;
+      font-size: 14px;
+      color: #333;
+      span {
+        position: absolute;
+        right: 10px;
+        font-size: 12px;
+        color: #787d82;
+        font-weight: normal;
+      }
+    }
+  }
+  .group-item {
+    display: flex;
+    // justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    .left {
+      width: 50px;
+      height: 50px;
+      margin: 0 10px;
+      text-align: left;
+    }
+    .group-text p {
       font-size: 16px;
-      margin-right: 20px;
+      color: #333;
+      text-align: left;
+      margin: 0;
+      padding: 0;
     }
-    .van-tag {
-      margin-right: 7px;
+    .custom-title {
+      margin-right: 4px;
+      vertical-align: middle;
     }
-    .date {
-      position: absolute;
-      right: 8px;
-      top: 70px;
-      font-size: 12px;
-      color: #ccc;
+  }
+  .news-text {
+    display: flex;
+    margin-bottom: 7px;
+    .news-left {
+      width: 120px;
+      margin-right: 15px;
+    }
+    .new-right {
+      position: relative;
+      h2 {
+        font-size: 16px;
+        margin-right: 20px;
+      }
+      .van-tag {
+        margin-right: 7px;
+      }
+      .date {
+        position: absolute;
+        right: 8px;
+        top: 70px;
+        font-size: 12px;
+        color: #ccc;
+      }
     }
   }
 }
